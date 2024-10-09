@@ -56,8 +56,14 @@ export class EmployeesService {
     }
   }
 
-  async findAll() {
-    return this.employeeRepository.find();
+  async findAll(data: unknown) {
+    try {
+      console.log(typeof data);
+      throw new Error('Employee error');
+      return this.employeeRepository.find();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async findOne(id: string) {

@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
+  Req,
 } from '@nestjs/common';
 
 import { ChangeRecordsGuard } from '../guards/change-records.guard';
@@ -17,6 +18,7 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { LabelingInterceptor } from '../interceptors/labeling.interceptor';
 import { ROUTE_PATH_PREFIX } from '../constants';
 import { GenreTransformPipe } from 'src/pipes/genre-transform.pipe';
+import { Request } from 'express';
 
 @Controller(ROUTE_PATH_PREFIX.EMPLOYEES)
 @UseInterceptors(LabelingInterceptor)
@@ -30,8 +32,9 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll() {
-    return this.employeesService.findAll();
+  findAll(@Req() request: Request) {
+    const host: unknown = request?.headers.host;
+    return this.employeesService.findAll(host);
   }
 
   @Get(':id')
